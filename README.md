@@ -88,8 +88,3 @@ This will generate the Pac-Man map and display character positions.
 
 ---
 
-## 🎯 Next Steps
-If you have completed **Week 1**, the next milestone is **Week 2**, where we introduce the **Factory Method & Strategy Pattern** for dynamic ghost behavior!
-
-If you need any modifications or enhancements, feel free to update the code accordingly! 🚀
-
