@@ -51,9 +51,32 @@ void WanderState::move(Ghost* ghost, int& x, int& y, int pacX, int pacY) {
         exit(0); // Keluar dari program
     }
 
-    // Secara acak ubah state ke ChaseState
-    if (rand() % 100 < 30) { // 10% kemungkinan untuk masuk ke ChaseState
-        std::cout << "Ghost switching to ChaseState randomly." << std::endl;
+    // Periksa apakah Pacman terlihat oleh Ghost
+    bool pacmanVisible = false;
+    if (x == pacX) { // Sama pada sumbu X
+        int step = (y < pacY) ? 1 : -1;
+        pacmanVisible = true;
+        for (int j = y + step; j != pacY; j += step) {
+            if (Map::isWall(x, j)) {
+                pacmanVisible = false;
+                break;
+            }
+        }
+    } else if (y == pacY) { // Sama pada sumbu Y
+        int step = (x < pacX) ? 1 : -1;
+        pacmanVisible = true;
+        for (int i = x + step; i != pacX; i += step) {
+            if (Map::isWall(i, y)) {
+                pacmanVisible = false;
+                break;
+            }
+        }
+    }
+
+    // Jika Pacman terlihat dan dalam jarak tertentu, ubah ke ChaseState
+    int distanceSquared = (x - pacX) * (x - pacX) + (y - pacY) * (y - pacY);
+    if (pacmanVisible && distanceSquared <= 16) { // Jarak <= 4 (akar kuadrat dari 16)
+        std::cout << "Ghost sees Pacman! Switching to ChaseState." << std::endl;
         ghost->changeState(std::make_shared<ChaseState>());
     }
 }
